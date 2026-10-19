@@ -47,13 +47,27 @@ ln -s "$PWD/src/cli.ts" ~/.local/bin/amail
 
 ## Using it with coding agents
 
-`skills/amail/SKILL.md` is an [agent skill](https://agentskills.io) that explains to agents (Claude Code, Codex, opencode, …) when and how to use `amail`. It tells them to create drafts by default and to send only when you explicitly ask. Link it into your agent's skills folder:
+`skills/amail/SKILL.md` is an [agent skill](https://agentskills.io) that explains to agents when and how to use `amail`. It tells them to create drafts by default and to send only when you explicitly ask. Symlink it into the skills folder each agent reads at the user level:
+
+| Agent | Reads user skills from |
+| --- | --- |
+| Codex | `~/.agents/skills` |
+| opencode | `~/.agents/skills`, `~/.claude/skills`, `~/.config/opencode/skills` |
+| Claude Code | `~/.claude/skills` only |
+
+Two links cover all three. `~/.agents/skills` covers Codex and opencode, and `~/.claude/skills` covers Claude Code, which doesn't read `.agents`. opencode sees both links, but it loads a skill by its ID only once, so this doesn't create a duplicate. Don't also add it to `~/.config/opencode/skills` or `~/.codex/skills`.
 
 ```sh
-# Homebrew install
-ln -s "$(brew --prefix)/share/amail/skills/amail" ~/.agents/skills/amail
-ln -s "$(brew --prefix)/share/amail/skills/amail" ~/.claude/skills/amail
+skill="$(brew --prefix)/share/amail/skills/amail"   # or "$PWD/skills/amail" for a source checkout
+mkdir -p ~/.agents/skills ~/.claude/skills
+ln -sfn "$skill" ~/.agents/skills/amail    # Codex + opencode
+ln -sfn "$skill" ~/.claude/skills/amail    # Claude Code
 ```
+
+If you used an Apple Mail MCP server before, remove it so agents don't have two ways to reach your mail:
+- **Claude Code:** `claude mcp remove <name>`
+- **Codex:** delete its `[mcp_servers.<name>]` block from `~/.codex/config.toml`
+- **opencode:** delete its entry under `mcp` in `opencode.json`
 
 If your agent lets you require approval for shell commands, require it for `amail send`, `amail delete`, `amail move` and `amail archive`.
 
