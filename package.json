@@ -1,0 +1,29 @@
+{
+  "name": "amail",
+  "version": "0.1.0",
+  "description": "Fast Apple Mail CLI for humans and coding agents: reads Mail's local index directly, writes via Mail.app",
+  "keywords": ["apple-mail", "mail", "email", "cli", "macos", "agents", "claude-code", "codex", "opencode"],
+  "license": "MIT",
+  "author": "KorigamiK",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KorigamiK/amail.git"
+  },
+  "type": "module",
+  "private": true,
+  "bin": { "amail": "./src/cli.ts" },
+  "engines": { "bun": ">=1.2.0" },
+  "scripts": {
+    "dev": "bun src/cli.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "build": "bun build src/cli.ts --target=bun --minify --outfile dist/amail.js",
+    "release": "bun run build && scripts/release.sh"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "postal-mime": "^4.0.7"
+  }
+}
