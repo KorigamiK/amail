@@ -47,7 +47,15 @@ ln -s "$PWD/src/cli.ts" ~/.local/bin/amail
 
 ## Using it with coding agents
 
-`skills/amail/SKILL.md` is an [agent skill](https://agentskills.io) that explains to agents when and how to use `amail`. It tells them to create drafts by default and to send only when you explicitly ask. Symlink it into the skills folder each agent reads at the user level:
+[`skills/amail/SKILL.md`](skills/amail/SKILL.md) is an [agent skill](https://agentskills.io) that explains to agents when and how to use `amail`. It tells them to create drafts by default and to send only when you explicitly ask.
+
+Install the `amail` CLI first using the instructions above, then install the skill:
+
+```sh
+bunx skills add KorigamiK/amail --skill amail
+```
+
+This installs the agent instructions; it does not install the `amail` CLI or grant macOS permissions. Alternatively, symlink it into the skills folder each agent reads at the user level:
 
 | Agent | Reads user skills from |
 | --- | --- |
